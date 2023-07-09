@@ -1,3 +1,11 @@
+# Logs and backups
+log/
+*.log
+backup/
+
+# VSCode
+.vscode/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

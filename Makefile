@@ -2,7 +2,13 @@
 .PHONY: usage install build run lint test
 
 # Variables
+LOG_DIR = logs
+$(LOG_DIR):
+	@mkdir -p $(LOG_DIR)
 
+BACKUP_DIR = backups
+$(BACKUP_DIR):
+	@mkdir -p $(BACKUP_DIR)
 
 # Targets
 usage:
@@ -19,8 +25,8 @@ build:
 	@echo build complete
 
 # Run
-run:
-	@python3.11 openct
+run: | $(LOG_DIR) $(BACKUP_DIR)
+	@poetry run python openct
 
 # Run Pylint
 lint:

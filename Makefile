@@ -10,6 +10,10 @@ BACKUP_DIR = backups
 $(BACKUP_DIR):
 	@mkdir -p $(BACKUP_DIR)
 
+DATASTORE_DIR = datastore
+$(DATASTORE_DIR):
+	@mkdir -p $(DATASTORE_DIR)
+
 # Targets
 usage:
 	@echo "Usage: make [target]"
@@ -29,7 +33,7 @@ build:
 	@echo build complete
 
 # Run
-run: | $(LOG_DIR) $(BACKUP_DIR)
+run: | $(LOG_DIR) $(BACKUP_DIR) $(DATASTORE_DIR)
 	@poetry run python openct
 
 # Run Pylint

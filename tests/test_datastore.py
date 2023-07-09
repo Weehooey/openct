@@ -13,3 +13,4 @@ def test_get_number_of_items():
     dstore = Yaml()
     returned_value = dstore.get_number_of_items()
     assert isinstance(returned_value, int)
+    

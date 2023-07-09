@@ -1,3 +1,5 @@
+![pylint](https://github.com/weehooey/openct/actions/workflows/pylint.yml/badge.svg)
+![pytest](https://github.com/weehooey/openct/actions/workflows/pytest.yml/badge.svg)
 # openct
 Configuration backup and analysis tools for devices running pfSense and RouterOS
 

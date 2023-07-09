@@ -20,12 +20,12 @@ build:
 
 # Run
 run:
-	@python3.11 src/openct
+	@python3.11 openct
 
 # Run Pylint
-lint: | install
-	@poetry run pylint --rcfile .pylintrc --recursive=y src
+lint:
+	@poetry run pylint --rcfile .pylintrc --recursive=y openct
 
 # Run PyTest
-test: | install
+test:
 	@poetry run pytest

@@ -14,4 +14,5 @@ ignored-modules=
 [REPORTS]
 
 # Disable some unnecessary reports
-disable=
+disable=import-error,
+        missing-function-docstring

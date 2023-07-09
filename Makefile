@@ -15,9 +15,13 @@ usage:
 	@echo "Usage: make [target]"
 
 # install dependencies
-install:
+install: ~/.bash_completion
+	poetry config virtualenvs.in-project true
 	@poetry install
 	@echo install complete
+
+~/.bash_completion:
+	poetry completions bash >> ~/.bash_completion
 
 # build
 build:

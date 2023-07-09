@@ -39,7 +39,7 @@ class Yaml(Datastore):
         try:
             return next(self.data_generator)
         except StopIteration:
-            return
+            return None
 
     def get_number_of_items(self):
         number_of_items = 3

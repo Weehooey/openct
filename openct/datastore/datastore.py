@@ -42,5 +42,5 @@ class Yaml(Datastore):
             return None
 
     def get_number_of_items(self):
-        number_of_items = 3
+        number_of_items = len(self.data)
         return number_of_items

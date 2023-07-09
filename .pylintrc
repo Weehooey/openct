@@ -1,0 +1,17 @@
+[MASTER]
+
+# Specify additional import names or patterns to consider as "local" imports
+extension-pkg-whitelist=
+
+# Add the root directory of your project to the python path
+init-hook=
+
+[TYPECHECK]
+
+# List of module names for which member attributes should not be checked
+ignored-modules=
+
+[REPORTS]
+
+# Disable some unnecessary reports
+disable=

@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "openct"
+version = "0.1.0"
+description = "Configuration backup and analysis tools for devices running pfSense and RouterOS"
+authors = ["Weehooey <info@weehooey.com>"]
+license = "GNU GPL v3.0"
+readme = "README.md"
+repository = "https://github.com/weehooey/openct"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+PyYAML = "^6.0"
+tqdm = "^4.65.0"
+fabric = "^3.1.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.3.0"
+pylint = "^2.17.4"
+pytest = "^7.4.0"
+wrapt = "^1.15.0"
+dill = "^0.3.6"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

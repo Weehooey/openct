@@ -16,7 +16,7 @@ usage:
 
 # install dependencies
 install: ~/.bash_completion
-	poetry config virtualenvs.in-project true
+	@poetry config virtualenvs.in-project true
 	@poetry install
 	@echo install complete
 

@@ -1,7 +1,7 @@
 # Logs and backups
 log/
 *.log
-backup/
+backups/
 
 # VSCode
 .vscode/

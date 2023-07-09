@@ -6,8 +6,8 @@ import logging
 
 from tqdm import tqdm
 
-from config_loader import Config
-from devices import RouterOSDevice
+from openct.config_loader import Config
+from openct.devices import RouterOSDevice
 
 
 def run_backup(config: Config, devices: list[str]) -> None:

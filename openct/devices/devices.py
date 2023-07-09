@@ -2,7 +2,7 @@
 
 from abc import ABC, abstractmethod
 
-from connections import DeviceConnection, SshConnection
+from openct.connections import DeviceConnection, SshConnection
 
 class Device(ABC):
     """Device abstract base class"""

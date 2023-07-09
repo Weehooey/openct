@@ -9,9 +9,9 @@ class Datastore:
     def __init__(self):
         self.fake = "fake"
 
-    def get_next_item(self):
+    def get_next_item(self) -> None:
         """Return the next item from the datastore."""
-        return None
+        return "somethung"
 
     def do_nothing(self):
         """Do nothing."""

@@ -3,8 +3,8 @@
 import yaml
 
 from logging_init import init_logger
-from config_loader import load_config
-from backup import run_backup
+from openct.config_loader import load_config
+from openct.backup import run_backup
 
 DEVICES_FILE = "config/devices.yml"
 

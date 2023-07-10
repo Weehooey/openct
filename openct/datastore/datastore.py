@@ -68,5 +68,5 @@ def get_datastore(datastore_type="yaml") -> Datastore:
         "sqlite": _SQLite,
     }
     if datastore_type in datastore_types:
-        return datastore_types[datastore_type]()
+        return datastore_types[datastore_type]
     return None

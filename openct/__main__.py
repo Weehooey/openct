@@ -19,7 +19,8 @@ init_logger(config.dirs.log_dir)
 
 backup_dir = os.path.join(config.dirs.backup_dir, time.strftime("%Y%m%d_%H%M"))
 
-datastore: Datastore = get_datastore()  # Add datastore_type to config.settings
+Dstore = get_datastore()
+datastore: Datastore = Dstore()  # Add datastore_type to config.settings
 devices = datastore.get_data()
 
 with tqdm(total=100) as pbar:

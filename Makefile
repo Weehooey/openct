@@ -43,3 +43,6 @@ lint:
 # Run PyTest
 test:
 	@poetry run pytest
+
+full-monty: test lint
+	@echo Do both PyTest and Pylint before commit.

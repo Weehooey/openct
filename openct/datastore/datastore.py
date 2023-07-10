@@ -7,40 +7,66 @@ import yaml
 
 
 class Datastore(ABC):
-    """Datastore ABC."""
+    """
+    Datastore ABC.
+    """
 
     @abstractmethod
     def __init__(self):
-        pass
+        ...
 
     @abstractmethod
-    def get_next_item(self):
-        pass
+    def get_data(self):
+        ...
 
     @abstractmethod
-    def get_number_of_items(self):
-        pass
+    def make_pylint_happy(self):
+        ...
 
 
-class Yaml(Datastore):
-    """Using a YAML file as a datastore."""
+class _Yaml(Datastore):
+    """
+    Using a YAML file as a datastore.
+    """
 
     def __init__(self, file_path="datastore/datastore.yml"):
         self.file_path = file_path
+
+    def get_data(self):
         with open(self.file_path, "r", encoding="UTF8") as yaml_file:
-            self.data = yaml.safe_load(yaml_file)
-        self.data_generator = self._data_as_generator()
+            data = yaml.safe_load(yaml_file)
+        return data
 
-    def _data_as_generator(self):
-        for item in self.data:
-            yield item
+    def make_pylint_happy(self):
+        ...
 
-    def get_next_item(self):
-        try:
-            return next(self.data_generator)
-        except StopIteration:
-            return None
 
-    def get_number_of_items(self):
-        number_of_items = len(self.data)
-        return number_of_items
+class _SQLite(Datastore):
+    """
+    NOT IMPLEMENTED. Example only.
+    Using a SQLite database as a datastore.
+    """
+
+    def __init__(self):
+        ...
+
+    def get_data(self):
+        data = "These are not the data you are looking for."
+        return data
+
+    def make_pylint_happy(self):
+        ...
+
+
+def get_datastore(datastore_type="yaml") -> Datastore:
+    """
+    Datastore factory that returns the concrete class
+    for the selected datastore.
+    """
+    datastore_types = {
+        "yaml": _Yaml,
+        "sqlite": _SQLite,
+    }
+    if datastore_type in datastore_types:
+        return datastore_types[datastore_type]
+    return None

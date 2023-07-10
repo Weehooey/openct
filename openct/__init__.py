@@ -2,7 +2,6 @@
 	pfSense and RouterOS
 """
 
-from .backup import run_backup
 from .config_loader import (
     Config,
     ConfigSettings,

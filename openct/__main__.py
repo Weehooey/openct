@@ -1,18 +1,40 @@
 """Main entry point for the OpenCT application."""
 
-import yaml
+import os
+import time
+import logging
+
+from tqdm import tqdm
 
 from logging_init import init_logger
 from openct.config_loader import load_config
-from openct.backup import run_backup
+from openct.datastore import Yaml
+from openct.config_loader import Config
+from openct.devices import RouterOSDevice
+from openct.datastore import Datastore
 
-DEVICES_FILE = "config/devices.yml"
 
-config = load_config()
+config: Config = load_config()
 
 init_logger(config.dirs.log_dir)
 
-with open(file=DEVICES_FILE, mode="r", encoding="utf-8") as file:
-    devices = yaml.safe_load(file)
+backup_dir = os.path.join(config.dirs.backup_dir, time.strftime("%Y%m%d_%H%M"))
 
-run_backup(config, devices["devices"])
+datastore: Datastore = Yaml()
+
+with tqdm(total=100) as pbar:
+    while host := datastore.get_next_item():
+        logging.info("Backing up device %s", host)
+        pbar.update(100 / datastore.get_number_of_items())
+
+        device = RouterOSDevice(
+            host,
+            config.identity.username,
+            config.settings.connection_timeout,
+            config.identity.key_file,
+        )
+
+        if device.is_available():
+            device.fetch_backup()
+        else:
+            logging.error("Could not connect to device")

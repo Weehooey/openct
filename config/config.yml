@@ -8,6 +8,7 @@ directories:
   log_dir: "logs"
 
 settings:
+  datastore_type: "yaml"
   connection_timeout: 3
   backup_max_age: 7
   log_max_age: 7

@@ -1,64 +1,28 @@
-"""Config loader module."""
+"""Config """
 
-from dataclasses import dataclass
 import sys
 
 import yaml
 
-CONFIG_FILE = "config/config.yml"
+from .config_schema import Config, ConfigDirs, ConfigIdentity, ConfigSettings
 
 
-@dataclass
-class ConfigIdentity:
-    """Config identity dataclass."""
-
-    username: str
-    key_file: str
-
-
-@dataclass
-class ConfigDirs:
-    """Config directories dataclass."""
-
-    backup_dir: str
-    log_dir: str
-
-
-@dataclass
-class ConfigSettings:
-    """Config settings dataclass."""
-
-    connection_timeout: int
-    backup_max_age: int
-    log_max_age: int
-    log_max_count: int
-
-
-@dataclass
-class Config:
-    """Config dataclass."""
-
-    identity: ConfigIdentity
-    dirs: ConfigDirs
-    settings: ConfigSettings
-
-
-def load_config() -> Config:
+def load_config(config_file: str = "config/config.yml") -> Config:
     """Try loading config."""
     try:
-        return load_config_from_file()
+        return load_config_from_file(config_file)
     except FileNotFoundError:
-        print(f"Config file {CONFIG_FILE} not found. Please create it.")
+        print(f"Config file {config_file} not found. Please create it.")
         sys.exit(1)
     except TypeError:
-        print(f"Config file {CONFIG_FILE} is empty. Please populate it.")
+        print(f"Config file {config_file} is empty. Please populate it.")
         sys.exit(1)
 
 
-def load_config_from_file() -> Config:
+def load_config_from_file(config_file: str) -> Config:
     """Load config from file."""
-    with open(file=CONFIG_FILE, mode="r", encoding="utf-8") as config_file:
-        config_data = yaml.safe_load(config_file)
+    with open(file=config_file, mode="r", encoding="utf-8") as conf_file:
+        config_data = yaml.safe_load(conf_file)
 
     identity = ConfigIdentity(
         username=config_data["identity"]["username"],
@@ -71,6 +35,7 @@ def load_config_from_file() -> Config:
     )
 
     settings = ConfigSettings(
+        datastore_type=config_data["settings"]["datastore_type"],
         connection_timeout=config_data["settings"]["connection_timeout"],
         backup_max_age=config_data["settings"]["backup_max_age"],
         log_max_age=config_data["settings"]["log_max_age"],
@@ -97,5 +62,5 @@ if __name__ == "__main__":
         },
     }
 
-    with open(file=CONFIG_FILE, mode="a", encoding="utf-8") as file:
+    with open(file="config/config.yml", mode="a", encoding="utf-8") as file:
         yaml.dump(mt_backup_config, file, default_flow_style=False)

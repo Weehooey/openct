@@ -7,9 +7,8 @@ import logging
 from tqdm import tqdm
 
 from logging_init import init_logger
-from openct.config_loader import load_config
+from openct.config import Config, load_config
 from openct.datastore import Datastore, get_datastore
-from openct.config_loader import Config
 from openct.devices import RouterOSDevice
 
 
@@ -19,8 +18,8 @@ init_logger(config.dirs.log_dir)
 
 backup_dir = os.path.join(config.dirs.backup_dir, time.strftime("%Y%m%d_%H%M"))
 
-Dstore = get_datastore()
-datastore: Datastore = Dstore()  # Add datastore_type to config.settings
+Dstore = get_datastore(config.settings.datastore_type)
+datastore: Datastore = Dstore()
 devices = datastore.get_data()
 
 with tqdm(total=100) as pbar:

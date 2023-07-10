@@ -1,3 +1,3 @@
 """Datastore module."""
 
-from .datastore import Datastore, Yaml
+from .datastore import Datastore, get_datastore

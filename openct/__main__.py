@@ -8,10 +8,9 @@ from tqdm import tqdm
 
 from logging_init import init_logger
 from openct.config_loader import load_config
-from openct.datastore import Yaml
+from openct.datastore import Datastore, get_datastore
 from openct.config_loader import Config
 from openct.devices import RouterOSDevice
-from openct.datastore import Datastore
 
 
 config: Config = load_config()
@@ -20,12 +19,14 @@ init_logger(config.dirs.log_dir)
 
 backup_dir = os.path.join(config.dirs.backup_dir, time.strftime("%Y%m%d_%H%M"))
 
-datastore: Datastore = Yaml()
+Dstore = get_datastore()
+datastore: Datastore = Dstore()  # Add datastore_type to config.settings
+devices = datastore.get_data()
 
 with tqdm(total=100) as pbar:
-    while host := datastore.get_next_item():
+    for host in devices:
         logging.info("Backing up device %s", host)
-        pbar.update(100 / datastore.get_number_of_items())
+        pbar.update(100 / len(devices))
 
         device = RouterOSDevice(
             host,

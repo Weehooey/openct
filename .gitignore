@@ -1,9 +1,9 @@
 # Logs, backups and datastores
-log/
+logs/
 *.log
 backups/
 datastore/datastore.yml
-config/
+config/config.yml
 
 # VSCode
 .vscode/

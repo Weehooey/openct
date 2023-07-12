@@ -1,5 +1,5 @@
-.DEFAULT_GOAL: usage
-.PHONY: usage install build run lint test
+.DEFAULT_GOAL = usage
+.PHONY: usage install build run lint test full-monty
 
 # Variables
 LOG_DIR = logs
@@ -13,6 +13,14 @@ $(BACKUP_DIR):
 DATASTORE_DIR = datastore
 $(DATASTORE_DIR):
 	@mkdir -p $(DATASTORE_DIR)
+
+CONFIG_DIR = config
+$(CONFIG_DIR):
+	@mkdir -p $(CONFIG_DIR)
+
+CONFIG_FILE = $(CONFIG_DIR)/config.yml
+$(CONFIG_FILE): | $(CONFIG_DIR)
+	@poetry run python openct/config
 
 # Targets
 usage:
@@ -33,7 +41,7 @@ build:
 	@echo build complete
 
 # Run
-run: | $(LOG_DIR) $(BACKUP_DIR) $(DATASTORE_DIR)
+run: | $(LOG_DIR) $(BACKUP_DIR) $(DATASTORE_DIR) $(CONFIG_FILE)
 	@poetry run python openct
 
 # Run Pylint

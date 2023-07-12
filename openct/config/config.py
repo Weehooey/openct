@@ -30,8 +30,8 @@ def load_config_from_file(config_file: str) -> Config:
     )
 
     dirs = ConfigDirs(
-        backup_dir=config_data["directories"]["backup_dir"],
-        log_dir=config_data["directories"]["log_dir"],
+        backup_dir=config_data["dirs"]["backup_dir"],
+        log_dir=config_data["dirs"]["log_dir"],
     )
 
     settings = ConfigSettings(
@@ -43,24 +43,3 @@ def load_config_from_file(config_file: str) -> Config:
     )
 
     return Config(identity=identity, dirs=dirs, settings=settings)
-
-
-if __name__ == "__main__":
-    mt_backup_config = {
-        "identity": {
-            "username": "mtbackup",
-            "key_file": "config/.ssh/id_rsa",
-        },
-        "dirs": {
-            "backup_dir": "backups",
-            "log_dir": "log/mt-config-backup",
-        },
-        "settings": {
-            "connection_timeout": 3,
-            "backup_max_age": 60,
-            "log_max_count": 10,
-        },
-    }
-
-    with open(file="config/config.yml", mode="a", encoding="utf-8") as file:
-        yaml.dump(mt_backup_config, file, default_flow_style=False)

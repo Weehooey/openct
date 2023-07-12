@@ -3,6 +3,7 @@
 from typing import Protocol
 
 from fabric import Connection as FabricConnection
+from paramiko.ssh_exception import SSHException
 
 
 class DeviceConnection(Protocol):
@@ -36,7 +37,7 @@ class SshConnection(DeviceConnection):
             try:
                 connection.open()
                 return True
-            except TimeoutError:
+            except (TimeoutError, SSHException):
                 return False
 
     def fetch_backup(self) -> None:

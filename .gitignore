@@ -3,7 +3,7 @@ logs/
 *.log
 backups/
 datastore/datastore.yml
-config/config.yml
+config.yml
 
 # VSCode
 .vscode/

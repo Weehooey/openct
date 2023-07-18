@@ -14,13 +14,9 @@ DATASTORE_DIR = datastore
 $(DATASTORE_DIR):
 	@mkdir -p $(DATASTORE_DIR)
 
-CONFIG_DIR = config
-$(CONFIG_DIR):
-	@mkdir -p $(CONFIG_DIR)
-
-CONFIG_FILE = $(CONFIG_DIR)/config.yml
-$(CONFIG_FILE): | $(CONFIG_DIR)
-	@poetry run python openct/config
+CONFIG_FILE = config.yml
+$(CONFIG_FILE):
+	@poetry run python openct/setup
 
 # Targets
 usage:

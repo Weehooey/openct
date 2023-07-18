@@ -14,8 +14,7 @@ def load_config(config_file: str) -> Config:
     except FileNotFoundError:
         print(f"Config file {config_file} not found. Please create it.")
         sys.exit(1)
-    except TypeError as e:
-        print(e)
+    except TypeError:
         print(f"Config file {config_file} is empty. Please populate it.")
         sys.exit(1)
 

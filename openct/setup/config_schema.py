@@ -15,6 +15,7 @@ class ConfigIdentity:
 class ConfigDirs:
     """Config directories dataclass."""
 
+    root_dir: str
     backup_dir: str
     log_dir: str
 

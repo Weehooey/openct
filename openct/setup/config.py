@@ -7,14 +7,15 @@ import yaml
 from .config_schema import Config, ConfigDirs, ConfigIdentity, ConfigSettings
 
 
-def load_config(config_file: str = "config/config.yml") -> Config:
+def load_config(config_file: str) -> Config:
     """Try loading config."""
     try:
         return load_config_from_file(config_file)
     except FileNotFoundError:
         print(f"Config file {config_file} not found. Please create it.")
         sys.exit(1)
-    except TypeError:
+    except TypeError as e:
+        print(e)
         print(f"Config file {config_file} is empty. Please populate it.")
         sys.exit(1)
 
@@ -32,6 +33,7 @@ def load_config_from_file(config_file: str) -> Config:
     dirs = ConfigDirs(
         backup_dir=config_data["dirs"]["backup_dir"],
         log_dir=config_data["dirs"]["log_dir"],
+        root_dir="",
     )
 
     settings = ConfigSettings(

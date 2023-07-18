@@ -21,5 +21,5 @@ mt_backup_config = {
     },
 }
 
-with open(file="config/config.yml", mode="a", encoding="utf-8") as file:
+with open(file="config.yml", mode="a", encoding="utf-8") as file:
     yaml.dump(mt_backup_config, file, default_flow_style=False)

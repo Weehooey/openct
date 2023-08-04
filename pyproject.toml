@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openct"
-version = "0.1.3"
+version = "0.1.4"
 description = "Configuration backup and analysis tools for devices running pfSense and RouterOS"
 authors = ["Weehooey <info@weehooey.com>"]
 license = "GNU GPL v3.0"

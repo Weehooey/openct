@@ -20,15 +20,7 @@ with tqdm(total=100) as pbar:
         logging.info("Backing up device %s", host)
         pbar.update(100 / len(devices))
 
-        device = RouterOSDevice(
-            host,
-            config.identity.username,
-            config.settings.connection_timeout,
-            config.identity.key_file,
-            config.dirs.backup_dir,
-        )
+        device = RouterOSDevice(host, config)
 
         if device.is_available():
             device.fetch_backup()
-        else:
-            logging.error("Could not connect to device %s", host)

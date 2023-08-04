@@ -2,32 +2,34 @@
 """
 
 import os
-import sys
+import signal
+import daemon
+
+from openct.setup import Config
 
 
-def daemonize() -> None:
-    fork_and_exit_parent()
-    os.chdir("/")
-    os.setsid()
-    fork_and_exit_parent()
-
-    sys.stdout.flush()
-    sys.stderr.flush()
-    si = open(os.devnull, "r")
-    so = open(os.devnull, "a+")
-    se = open(os.devnull, "a+")
-    os.dup2(si.fileno(), sys.stdin.fileno())
-    os.dup2(so.fileno(), sys.stdout.fileno())
-    os.dup2(se.fileno(), sys.stderr.fileno())
-
-    # while True: ...
+def sigterm_handler(signum, frame) -> None:
+    """Terminate the daemon."""
+    raise SystemExit(0)
 
 
-def fork_and_exit_parent() -> None:
-    try:
-        pid: int = os.fork()
-        if pid > 0:
-            sys.exit(0)
-    except OSError as error:
-        sys.stderr.write(f"Failed to fork: {error}\n")
-        sys.exit(1)
+def daemonize(config: Config) -> None:
+    # Create the daemon context
+    context = daemon.DaemonContext(
+        working_directory=config.dirs.root_dir,
+        umask=0o002,
+        pidfile=daemon.pidfile.PIDLockFile("/var/run/openct.pid"),
+    )
+
+    # Signal handlers
+    context.signal_map = {
+        signal.SIGTERM: sigterm_handler,
+        signal.SIGHUP: "sigterm_handler",
+    }
+
+    # Open files to preserve
+    context.files_preserve = []
+
+    # Run the daemon
+    with context:
+        pass

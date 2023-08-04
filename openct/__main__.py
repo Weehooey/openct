@@ -25,6 +25,7 @@ with tqdm(total=100) as pbar:
             config.identity.username,
             config.settings.connection_timeout,
             config.identity.key_file,
+            config.dirs.backup_dir,
         )
 
         if device.is_available():

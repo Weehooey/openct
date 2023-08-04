@@ -1,9 +1,11 @@
 """Module for connection protocols"""
 
 from typing import Protocol
+import logging
 
 from fabric import Connection as FabricConnection
-from paramiko.ssh_exception import SSHException
+from paramiko.ssh_exception import SSHException, NoValidConnectionsError
+from invoke import UnexpectedExit
 
 
 class DeviceConnection(Protocol):
@@ -43,7 +45,8 @@ class SshConnection(DeviceConnection):
             try:
                 connection.open()
                 return True
-            except (TimeoutError, SSHException):
+            except (TimeoutError, SSHException, NoValidConnectionsError):
+                logging.error("Could not connect to device %s", self.ip_address)
                 return False
 
     def fetch_backup(self) -> None:
@@ -53,8 +56,13 @@ class SshConnection(DeviceConnection):
             connect_timeout=self.connection_timeout,
             connect_kwargs={"key_filename": self.key_file},
         ) as connection:
-            connection.run("/export file=backup", hide=True, warn=False)
-            connection.get(
-                "backup.rsc", f"{self.backup_dir}/backup_{self.ip_address}.rsc"
-            )
-            connection.run("file/remove backup.rsc", hide=True, warn=False)
+            try:
+                connection.run("/export file=backup", hide=True, warn=False)
+                connection.get(
+                    "backup.rsc", f"{self.backup_dir}/backup_{self.ip_address}.rsc"
+                )
+                connection.run("file/remove backup.rsc", hide=True, warn=False)
+            except UnexpectedExit:
+                logging.error(
+                    "Error while fetching backup from device %s", self.ip_address
+                )

@@ -31,4 +31,4 @@ with tqdm(total=100) as pbar:
         if device.is_available():
             device.fetch_backup()
         else:
-            logging.error("Could not connect to device")
+            logging.error("Could not connect to device %s", host)

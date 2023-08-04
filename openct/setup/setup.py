@@ -5,6 +5,7 @@ import os
 import time
 import logging
 import argparse
+import platform
 
 from .config_schema import Config
 from .config import load_config
@@ -44,9 +45,20 @@ def parse_args():
     args = parser.parse_args()
     return args
 
+def get_package_version():
+    import openct
+    return openct.__version__
 
 def init_logging(log_dir: str) -> None:
     log_file = os.path.join(log_dir, f"ocb_{time.strftime('%Y%m%d_%H%M%S')}.log")
+
+    header_info = f"Package Version: {get_package_version()}\n"
+    header_info += f"OS: {platform.system()} {platform.release()}\n"
+    header_info += f"Python Version: {platform.python_version()}\n"
+    header_info += "\n"
+
+    with open(log_file, "a", encoding="utf-8") as file:
+        file.write(header_info)
 
     logging.basicConfig(
         level=logging.INFO,

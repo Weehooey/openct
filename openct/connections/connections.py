@@ -12,6 +12,8 @@ from paramiko.ssh_exception import (
 )
 from invoke import UnexpectedExit, Failure
 
+from openct.setup import Config
+
 
 class DeviceConnection(Protocol):
     """DeviceConnection abstract base class"""
@@ -26,19 +28,12 @@ class DeviceConnection(Protocol):
 class SshConnection(DeviceConnection):
     """DeviceConnection using Fabric"""
 
-    def __init__(
-        self,
-        ip_address: str,
-        username: str,
-        connection_timeout: int,
-        key_file: str,
-        backup_dir: str,
-    ) -> None:
+    def __init__(self, ip_address: str, config: Config) -> None:
         self.ip_address = ip_address
-        self.username = username
-        self.connection_timeout = connection_timeout
-        self.key_file = key_file
-        self.backup_dir = backup_dir
+        self.username = config.identity.username
+        self.connection_timeout = config.settings.connection_timeout
+        self.key_file = config.identity.key_file
+        self.backup_dir = config.dirs.backup_dir
 
     def test_connection(self) -> bool:
         with FabricConnection(
@@ -56,9 +51,9 @@ class SshConnection(DeviceConnection):
                 AuthenticationException,
                 SSHException,
                 NoValidConnectionsError,
-            ) as e:
+            ) as error:
                 logging.error("Could not connect to device %s", self.ip_address)
-                logging.info(e)
+                logging.info(error)
                 return False
 
     def fetch_backup(self) -> None:
@@ -84,8 +79,8 @@ class SshConnection(DeviceConnection):
                     warn=False,
                     timeout=self.connection_timeout,
                 )
-            except (UnexpectedExit, Failure) as e:
+            except (UnexpectedExit, Failure) as error:
                 logging.error(
                     "Error while fetching backup from device %s", self.ip_address
                 )
-                logging.info(e)
+                logging.info(error)

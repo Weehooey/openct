@@ -3,6 +3,7 @@
 from abc import ABC, abstractmethod
 
 from openct.connections import DeviceConnection, SshConnection
+from openct.setup import Config
 
 
 class Device(ABC):
@@ -22,19 +23,8 @@ class Device(ABC):
 class RouterOSDevice(Device):
     """RouterOS device"""
 
-    def __init__(
-        self,
-        ip_address: str,
-        username: str,
-        connection_timeout: int,
-        key_file: str,
-        backup_dir: str,
-    ) -> None:
-        super().__init__(
-            SshConnection(
-                ip_address, username, connection_timeout, key_file, backup_dir
-            )
-        )
+    def __init__(self, ip_address: str, config: Config) -> None:
+        super().__init__(SshConnection(ip_address, config))
 
     def fetch_backup(self) -> str:
         return self.connection.fetch_backup()

@@ -20,12 +20,18 @@ class SshConnection(DeviceConnection):
     """DeviceConnection using Fabric"""
 
     def __init__(
-        self, ip_address: str, username: str, connection_timeout: int, key_file: str
+        self,
+        ip_address: str,
+        username: str,
+        connection_timeout: int,
+        key_file: str,
+        backup_dir: str,
     ) -> None:
         self.ip_address = ip_address
         self.username = username
         self.connection_timeout = connection_timeout
         self.key_file = key_file
+        self.backup_dir = backup_dir
 
     def test_connection(self) -> bool:
         with FabricConnection(
@@ -48,5 +54,7 @@ class SshConnection(DeviceConnection):
             connect_kwargs={"key_filename": self.key_file},
         ) as connection:
             connection.run("/export file=backup", hide=True, warn=False)
-            connection.get("backup.rsc", f"backups/backup_{self.ip_address}.rsc")
+            connection.get(
+                "backup.rsc", f"{self.backup_dir}/backup_{self.ip_address}.rsc"
+            )
             connection.run("file/remove backup.rsc", hide=True, warn=False)

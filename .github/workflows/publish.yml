@@ -10,6 +10,9 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11"]
     environment: release
     permissions:
       id-token: write
@@ -19,6 +22,11 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
     - name: Install poetry
       run: |
         pipx install poetry
@@ -26,7 +34,6 @@ jobs:
 
     - name: Bump version
       run: |
-        $POETRY_HOME/bin/pip install --user poetry-bumpversion
         poetry version ${{ github.ref_name }}
 
     - name: Build package

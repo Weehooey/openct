@@ -39,7 +39,4 @@ class PfSenseDevice(Device):
         super().__init__(SshConnection(ip_address, config))
 
     def fetch_backup(self) -> None:
-        self.connection.get_backup(
-            config_file="/cf/conf/config.xml",
-            file_extension=".xml",
-        )
+        self.connection.get_backup("/cf/conf/config.xml", ".xml")

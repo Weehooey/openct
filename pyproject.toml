@@ -23,3 +23,5 @@ dill = "^0.3.6"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry_bumpversion.file."openct/__init__.py"]

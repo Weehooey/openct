@@ -16,6 +16,10 @@ if os.path.exists(CONFIG_FILE):
         sys.exit()
 
 mt_backup_config = {
+    "config_version": {
+        "version": "0.1.0",
+        "comments": "Inital config verion."
+    },
     "identity": {
         "username": "username",
         "key_file": "config/.ssh/id_rsa",
@@ -33,5 +37,5 @@ mt_backup_config = {
     },
 }
 
-with open(file="config.yml", mode="a", encoding="utf-8") as file:
+with open(file="config.yml", mode="w", encoding="utf-8") as file:
     yaml.dump(mt_backup_config, file, default_flow_style=False)

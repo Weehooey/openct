@@ -4,6 +4,14 @@ from dataclasses import dataclass
 
 
 @dataclass
+class ConfigVersion:
+    """Config version dataclass."""
+
+    version: str
+    comments: str
+
+
+@dataclass
 class ConfigIdentity:
     """Config identity dataclass."""
 
@@ -35,6 +43,7 @@ class ConfigSettings:
 class Config:
     """Config dataclass."""
 
+    version: ConfigVersion
     identity: ConfigIdentity
     dirs: ConfigDirs
     settings: ConfigSettings

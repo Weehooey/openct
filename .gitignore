@@ -4,6 +4,7 @@ logs/
 backups/
 datastore/datastore.yml
 config.yml
+config.yml.bak
 config/.ssh/
 
 # VSCode

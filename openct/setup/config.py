@@ -24,10 +24,16 @@ def load_config_from_file(config_file: str) -> Config:
     with open(file=config_file, mode="r", encoding="utf-8") as conf_file:
         config_data = yaml.safe_load(conf_file)
 
-    config_version = ConfigVersion(
-        version=config_data["config"]["version"],
-        comments=config_data["config"]["comments"],
-    )
+    if "config_version" in config_data:
+        config_version = ConfigVersion(
+            version=config_data["config_version"]["version"],
+            comments=config_data["config_version"]["comments"],
+        )
+    else:
+        config_version = ConfigVersion(
+            version="0.0.0",
+            comments="Pre-versioning configuration file.",
+        )
 
     identity = ConfigIdentity(
         username=config_data["identity"]["username"],

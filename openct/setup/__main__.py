@@ -14,8 +14,9 @@ if os.path.exists(CONFIG_FILE):
     if user_input not in {"yes", "y"}:
         print("Config file not overwritten. Exiting.")
         sys.exit()
+    os.rename(CONFIG_FILE, CONFIG_FILE + ".bak")
 
-mt_backup_config = {
+starting_config_values = {
     "config_version": {
         "version": "0.1.0",
         "comments": "Inital config verion."
@@ -38,4 +39,4 @@ mt_backup_config = {
 }
 
 with open(file="config.yml", mode="w", encoding="utf-8") as file:
-    yaml.dump(mt_backup_config, file, default_flow_style=False)
+    yaml.dump(starting_config_values, file, default_flow_style=False)

@@ -27,4 +27,19 @@ class RouterOSDevice(Device):
         super().__init__(SshConnection(ip_address, config))
 
     def fetch_backup(self) -> str:
-        return self.connection.fetch_backup()
+        self.connection.run_command("/export file=backup")
+        self.connection.get_backup("backup.rsc", ".rsc")
+        self.connection.run_command("file/remove backup.rsc")
+
+
+class PfSenseDevice(Device):
+    """PfSense device"""
+
+    def __init__(self, ip_address: str, config: Config) -> None:
+        super().__init__(SshConnection(ip_address, config))
+
+    def fetch_backup(self) -> None:
+        self.connection.get_backup(
+            config_file="/cf/conf/config.xml",
+            file_extension=".xml",
+        )

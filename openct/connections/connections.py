@@ -21,7 +21,10 @@ class DeviceConnection(Protocol):
     def test_connection(self) -> bool:
         ...
 
-    def fetch_backup(self) -> None:
+    def get_backup(self, config_file: str, file_extension: str) -> None:
+        ...
+
+    def run_command(self, command: str) -> None:
         ...
 
 
@@ -56,7 +59,29 @@ class SshConnection(DeviceConnection):
                 logging.info(error)
                 return False
 
-    def fetch_backup(self) -> None:
+    def get_backup(
+        self,
+        config_file: str,
+        file_extension: str,
+    ) -> None:
+        with FabricConnection(
+            host=self.ip_address,
+            user=self.username,
+            connect_timeout=self.connection_timeout,
+            connect_kwargs={"key_filename": self.key_file},
+        ) as connection:
+            try:
+                connection.get(
+                    config_file,
+                    f"{self.backup_dir}/backup_{self.ip_address}{file_extension}",
+                )
+            except (UnexpectedExit, Failure) as error:
+                logging.error(
+                    "Error while getting backup from device %s", self.ip_address
+                )
+                logging.info(error)
+
+    def run_command(self, command: str) -> None:
         with FabricConnection(
             host=self.ip_address,
             user=self.username,
@@ -65,22 +90,13 @@ class SshConnection(DeviceConnection):
         ) as connection:
             try:
                 connection.run(
-                    "/export file=backup",
-                    hide=True,
-                    warn=False,
-                    timeout=self.connection_timeout,
-                )
-                connection.get(
-                    "backup.rsc", f"{self.backup_dir}/backup_{self.ip_address}.rsc"
-                )
-                connection.run(
-                    "file/remove backup.rsc",
+                    command,
                     hide=True,
                     warn=False,
                     timeout=self.connection_timeout,
                 )
             except (UnexpectedExit, Failure) as error:
                 logging.error(
-                    "Error while fetching backup from device %s", self.ip_address
+                    "Error while running command: %s on %s", command, self.ip_address
                 )
                 logging.info(error)

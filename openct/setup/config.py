@@ -4,7 +4,7 @@ import sys
 
 import yaml
 
-from .config_schema import Config, ConfigDirs, ConfigIdentity, ConfigSettings
+from .config_schema import Config, ConfigVersion, ConfigDirs, ConfigIdentity, ConfigSettings
 
 
 def load_config(config_file: str) -> Config:
@@ -23,6 +23,11 @@ def load_config_from_file(config_file: str) -> Config:
     """Load config from file."""
     with open(file=config_file, mode="r", encoding="utf-8") as conf_file:
         config_data = yaml.safe_load(conf_file)
+
+    config_version = ConfigVersion(
+        version=config_data["config"]["version"],
+        comments=config_data["config"]["comments"],
+    )
 
     identity = ConfigIdentity(
         username=config_data["identity"]["username"],
@@ -43,4 +48,4 @@ def load_config_from_file(config_file: str) -> Config:
         log_max_count=config_data["settings"]["log_max_count"],
     )
 
-    return Config(identity=identity, dirs=dirs, settings=settings)
+    return Config(version=config_version, identity=identity, dirs=dirs, settings=settings)

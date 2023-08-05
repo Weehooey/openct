@@ -7,8 +7,12 @@ Configuration backup and analysis\* tools for devices running pfSense* and Route
 
 ## Installation
 
-Run as `root`
+### pipx
+```bash
+pipx install openct
+```
 
+### pip
 ```bash
 mkdir /opt/openct
 cd /opt/openct
@@ -20,56 +24,62 @@ pip install pip --upgrade
 python -m pip install openct
 ```
 
+### From sources
+```bash
+git clone https://github.com/weehooey/openct
+cd openct
+poetry install
+```
+
 ## Setup
+
+### Creating a configuration file:
+Installed with pipx
+```bash
+openct-setup
+```
+
+From sources or installed with pip
+```bash
+python -m openct.setup
+```
+
+Edit the configuration file:
+```bash
+nano config.yml
+```
 
 ### SSH Keys
 
 1. Create a key pair in the project root folder
 2. Copy the public key to the target routers
-3. Add the private key to the `config.yml` file below
+3. Add the private key to the `config.yml` file
 
-### Creating a configuration file:
-```bash
-python -m openct.setup
-```
-Edit the configuration file:
-```bash
-nano config.yml
-```
 ### Datastore
 ```bash
 mkdir -p datastore
 touch datastore/datastore.yml
-mkdir -p logs
 ```
-
 Add the target routers to the datastore in the following format:
 ```yaml
 - "0.0.0.0"
 - "10.10.10.10"
 - "192.168.0.1
 ```
-### Create a script to make running easier
 
-For example in `run-openct.py`:
-
-```Python
-#!/opt/openct/.venv/bin/python
-
-import runpy
-runpy.run_module(mod_name='openct')
+### Logs
+```bash
+mkdir -p logs
 ```
-Make it executable:
+
+## Usage
 
 ```bash
-chmod +x run-openct.py
+openct
 ```
-
-Then run it:
-
-```bash
-./run-openct.py
-```
+Arguments:
+- `--root` root directory for the program (default ".")
+- `--config` path to the config file (default "./config.yml")
 
 ## Contributing
 * [Submit bugs and feature requests](https://github.com/Weehooey/openct/issues), and help us verify as they are checked in

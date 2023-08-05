@@ -9,6 +9,7 @@ repository = "https://github.com/weehooey/openct"
 
 [tool.poetry.scripts]
 openct = "openct.__main__:main"
+openct-setup = "openct.setup:main"
 
 [tool.poetry.dependencies]
 python = "^3.11"

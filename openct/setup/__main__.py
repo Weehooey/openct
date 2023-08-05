@@ -1,6 +1,7 @@
 """Config file generator."""
 
 import os
+import sys
 
 import yaml
 
@@ -10,9 +11,9 @@ if os.path.exists(CONFIG_FILE):
     user_input = input(
         f"The config file '{CONFIG_FILE}' already exists. Do you want to overwrite it? (yes/no): "
     ).lower()
-    if user_input != "yes" and user_input != "y":
+    if user_input not in {"yes", "y"}:
         print("Config file not overwritten. Exiting.")
-        exit()
+        sys.exit()
 
 mt_backup_config = {
     "identity": {
@@ -32,5 +33,5 @@ mt_backup_config = {
     },
 }
 
-with open(file=CONFIG_FILE, mode="w", encoding="utf-8") as file:
+with open(file="config.yml", mode="a", encoding="utf-8") as file:
     yaml.dump(mt_backup_config, file, default_flow_style=False)
